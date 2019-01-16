@@ -16,6 +16,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class Post
 {
+    public const QUANTITY_PER_PAGE = ['table' => 10, 'list' => 4];
+
     /**
      * @var int
      *

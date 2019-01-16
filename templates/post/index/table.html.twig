@@ -1,0 +1,20 @@
+{% extends 'post/index.html.twig' %}
+
+{% block posts %}
+<table class="table table-striped post-table mb-4">
+    <tr>
+        <th{% if pagination.isSorted('p.id') %} class="active" {% endif %}>
+            {{ knp_pagination_sortable(pagination, 'Id', 'p.id') }}
+        </th>
+        <th{% if pagination.isSorted('p.title') %} class="active" {% endif %}>
+            {{ knp_pagination_sortable(pagination, 'Title', 'p.title') }}
+        </th>
+    </tr>
+    {% for post in pagination %}
+    <tr{% if loop.index is odd%} class="post-table-odd" {% endif %}>
+        <td>{{ post.id }}</td>
+        <td>{{ post.title }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

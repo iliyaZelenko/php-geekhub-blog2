@@ -1,0 +1,10 @@
+{% extends 'page.html.twig' %}
+
+{# @var pagination \Knp\Component\Pager\Pagination\AbstractPagination #}
+
+{% block content %}
+    {% block posts %}{% endblock %}
+    <div class="blog-pagination">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+{% endblock %}

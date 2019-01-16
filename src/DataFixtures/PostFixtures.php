@@ -10,14 +10,18 @@ class PostFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $title = 'Title for test';
-        $content = 'Content for test';
+        $title = 'Title for test - %u';
+        $content = 'Content for test - %u';
 
-        $post = new Post();
-        $post->setTitle($title);
-        $post->setContent($content);
+        $count = 40;
 
-        $manager->persist($post);
+        for ($i = 0; $i < $count; ++$i) {
+            $post = new Post();
+            $manager->persist($post);
+            $post->setTitle(sprintf($title, $i));
+            $post->setContent(sprintf($content, $i));
+        }
+
         $manager->flush();
     }
 }
