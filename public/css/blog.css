@@ -24,6 +24,14 @@ h6, .h6 {
   color: #333;
 }
 
+a {
+  color: #007bff;
+}
+
+a:hover {
+  color: lightseagreen;
+}
+
 /*
  * Override Bootstrap's default container.
  */
@@ -39,7 +47,7 @@ h6, .h6 {
 
 .blog-masthead {
   margin-bottom: 3rem;
-  background-color: #428bca;
+  background-color: #2f2f2f;
   -webkit-box-shadow: inset 0 -.1rem .25rem rgba(0,0,0,.1);
           box-shadow: inset 0 -.1rem .25rem rgba(0,0,0,.1);
 }
@@ -49,7 +57,7 @@ h6, .h6 {
   position: relative;
   padding: 1rem;
   font-weight: 500;
-  color: #cdddeb;
+  color: #fff;
 }
 .nav-link:hover,
 .nav-link:focus {
@@ -142,6 +150,9 @@ h6, .h6 {
 .blog-post-title {
   margin-bottom: .25rem;
   font-size: 2.5rem;
+}
+.blog-post-title:hover {
+  text-decoration: none;
 }
 .blog-post-meta {
   margin-bottom: 1.25rem;
