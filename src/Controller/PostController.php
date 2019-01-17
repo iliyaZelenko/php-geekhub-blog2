@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 use App\Entity\Post;
+use App\Form\PostType;
 use App\Repository\PostRepository;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -59,6 +60,52 @@ class PostController extends AbstractController
 
         return $this->render($template, [
             'pagination' => $pagination,
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return Response
+     *
+     * @Route("/new", name="post_new")
+     */
+    public function new(Request $request): Response
+    {
+        $post = new Post();
+        $form = $this->createForm(PostType::class, $post);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($post);
+            $em->flush();
+            return $this->redirectToRoute('post_show', ['slug' => $post->getSlug()]);
+        }
+
+        return $this->render('post/new.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param Post $post
+     * @return Response
+     *
+     * @Route("/edit/{slug}", name="post_edit")
+     */
+    public function edit(Request $request, Post $post): Response
+    {
+        $form = $this->createForm(PostType::class, $post);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            return $this->redirectToRoute('post_show', ['slug' => $post->getSlug()]);
+        }
+
+        return $this->render('post/edit.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 

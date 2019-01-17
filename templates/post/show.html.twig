@@ -3,8 +3,8 @@
 {% block content %}
     <div>
         <h1>{{ post.title }}</h1>
-        <span>Created: {{ post.createdAt | date('Y/m/d') }}</span>
-        <span>Updated: {{ post.updatedAt | date('Y/m/d')}}</span>
+        <span>{{ 'Created' | trans }}: {{ post.createdAt | date('Y/m/d') }}</span>
+        <span>{{ 'Updated' | trans }}: {{ post.updatedAt | date('Y/m/d')}}</span>
         <p>{{ post.content }}</p>
     </div>
 {% endblock %}
