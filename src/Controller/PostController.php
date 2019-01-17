@@ -79,6 +79,9 @@ class PostController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($post);
             $em->flush();
+
+            $this->addFlash('success', 'Post created');
+
             return $this->redirectToRoute('post_show', ['slug' => $post->getSlug()]);
         }
 
@@ -99,8 +102,11 @@ class PostController extends AbstractController
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
+
+            $this->addFlash('success', 'Post updated');
+
             return $this->redirectToRoute('post_show', ['slug' => $post->getSlug()]);
         }
 
@@ -113,12 +119,29 @@ class PostController extends AbstractController
      * @param Post $post
      * @return Response
      *
-     * @Route("/{slug}", name="post_show")
+     * @Route("/show/{slug}", name="post_show")
      */
     public function show(Post $post): Response
     {
         return $this->render('post/show.html.twig', [
             'post' => $post,
         ]);
+    }
+
+    /**
+     * @param Post $post
+     * @return Response
+     *
+     * @Route("/delete/{slug}", name="post_delete")
+     */
+    public function delete(Post $post): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($post);
+        $em->flush();
+
+        $this->addFlash('success', 'Post deleted');
+
+        return $this->redirectToRoute('post_index');
     }
 }

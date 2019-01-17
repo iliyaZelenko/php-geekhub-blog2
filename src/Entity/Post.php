@@ -42,6 +42,14 @@ class Post
      * @ORM\Column(type="text")
      * @Assert\NotBlank()
      */
+    private $description;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="text")
+     * @Assert\NotBlank()
+     */
     private $content;
 
     /**
@@ -98,6 +106,22 @@ class Post
     public function setTitle(string $title): void
     {
         $this->title = $title;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
     }
 
     /**

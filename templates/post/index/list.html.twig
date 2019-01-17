@@ -8,7 +8,7 @@
 <div class="blog-post">
     <a class="h2 blog-post-title" href="{{ url('post_show', {'slug': post.slug}) }}">{{ post.title }}</a>
     <p class="blog-post-meta">{{ post.createdAt | date('F d, Y') }} by <a href="#">Mark</a></p>
-    <p>This blog post shows a few different types of content that's supported and styled with Bootstrap. Basic typography, images, and code are all supported.</p>
+    {{ post.description | raw }}
 </div>
 {% endfor %}
 {% endblock %}

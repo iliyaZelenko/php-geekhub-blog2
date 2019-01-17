@@ -19,3 +19,7 @@ Template.Description: An example blog built with Symfony.
 Template.Footer: Blog template built for <a href="https://getbootstrap.com">Bootstrap</a> by <a href="https://twitter.com/mdo">@mdo</a>.
 
 Link.Home: Home
+
+Post created: Post created successfuly!
+Post updated: Post updated successfuly!
+Post deleted: Post deleted successfuly!

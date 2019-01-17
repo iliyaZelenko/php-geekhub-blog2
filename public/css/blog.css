@@ -148,10 +148,16 @@ a:hover {
 .blog-post {
   margin-bottom: 4rem;
 }
-.blog-post-edit {
-  font-size: 30px;
+.blog-post-panel {
   float: right;
+}
+.blog-post-panel a {
+  font-size: 30px;
   color: #333;
+  margin-left: .5rem;
+}
+.blog-post-panel a:hover {
+  color: lightseagreen;
 }
 .blog-post-title {
   margin-bottom: .25rem;

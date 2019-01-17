@@ -3,11 +3,14 @@
 {# @var post \App\Entity\Post#}
 
 {% block content %}
-    <div>
-        <a class="blog-post-edit" href="{{ url('post_edit', {'slug': post.slug}) }}"><i class="fas fa-edit"></i></a>
-        <h1>{{ post.title }}</h1>
-        <span>{{ 'Created' | trans }}: {{ post.createdAt | date('Y/m/d') }}</span>
-        <span>{{ 'Updated' | trans }}: {{ post.updatedAt | date('Y/m/d')}}</span>
-        <p>{{ post.content }}</p>
+    <div class="blog-post">
+        <div class="blog-post-panel">
+            <a href="{{ url('post_edit', {'slug': post.slug}) }}"><i class="fas fa-edit"></i></a>
+            <a href="{{ url('post_delete', {'slug': post.slug}) }}"><i class="fas fa-trash-alt"></i></a>
+        </div>
+        <h2 class="blog-post-title">{{ post.title }}</h2>
+        <p class="blog-post-meta">{{ post.createdAt | date('F d, Y') }} by <a href="#">Mark</a></p>
+        {{ post.description | raw }}
+        {{ post.content | raw }}
     </div>
 {% endblock %}
