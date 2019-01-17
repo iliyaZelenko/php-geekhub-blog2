@@ -4,6 +4,7 @@
 
 {% block content %}
     <div>
+        <a class="blog-post-edit" href="{{ url('post_edit', {'slug': post.slug}) }}"><i class="fas fa-edit"></i></a>
         <h1>{{ post.title }}</h1>
         <span>{{ 'Created' | trans }}: {{ post.createdAt | date('Y/m/d') }}</span>
         <span>{{ 'Updated' | trans }}: {{ post.updatedAt | date('Y/m/d')}}</span>
