@@ -12,8 +12,8 @@ Back to top: Back to top
 
 Html.Title: Welcome!
 
-Template.Title: The Bootstrap Blog
-Template.Description: An example blog template built with Bootstrap.
+Template.Title: The Blog
+Template.Description: An example blog built with Symfony.
 Template.Footer: Blog template built for <a href="https://getbootstrap.com">Bootstrap</a> by <a href="https://twitter.com/mdo">@mdo</a>.
 
 Link.Home: Home
