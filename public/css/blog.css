@@ -66,10 +66,10 @@ a:hover {
 }
 
 /* Active state gets a caret at the bottom */
-.nav-link.active {
+.current .nav-link {
   color: #fff;
 }
-.nav-link.active:after {
+.current .nav-link:after {
   position: absolute;
   bottom: 0;
   left: 50%;
@@ -89,6 +89,7 @@ a:hover {
  */
 
 .blog-header {
+  padding-top: 5rem;
   padding-bottom: 1.25rem;
   margin-bottom: 2rem;
   border-bottom: .05rem solid #eee;

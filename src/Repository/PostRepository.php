@@ -27,4 +27,14 @@ class PostRepository extends ServiceEntityRepository
             ->orderBy('p.createdAt', 'DESC')
         ;
     }
+
+    public function findMostRecent(): ?Post
+    {
+        return $this
+            ->findAllQueryBuilder()
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }
