@@ -32,7 +32,7 @@ class PostController extends AbstractController
      */
     public function index(Request $request, PaginatorInterface $paginator): Response
     {
-        switch ($request->query->get('type')) {
+        switch ($request->query->get('view')) {
             case 'table':
                 $template = 'post/index/table.html.twig';
                 $count = Post::QUANTITY_PER_PAGE['table'];

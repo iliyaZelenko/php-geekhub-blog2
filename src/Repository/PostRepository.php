@@ -22,6 +22,9 @@ class PostRepository extends ServiceEntityRepository
 
     public function findAllQueryBuilder(): QueryBuilder
     {
-        return $this->createQueryBuilder('p');
+        return $this
+            ->createQueryBuilder('p')
+            ->orderBy('p.createdAt', 'DESC')
+        ;
     }
 }
