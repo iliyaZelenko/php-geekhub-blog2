@@ -30,22 +30,15 @@
 {% endfor %}
 
 <div class="container">
-
     <div class="row">
-
         <div class="col-sm-8 blog-main">
-
             {% block content %}{% endblock %}
-
-        </div><!-- /.blog-main -->
-
+        </div>
         <div class="col-sm-3 offset-sm-1 blog-sidebar">
             {{ include('_sidebar.html.twig') }}
-        </div><!-- /.blog-sidebar -->
-
-    </div><!-- /.row -->
-
-</div><!-- /.container -->
+        </div>
+    </div>
+</div>
 
 <footer class="blog-footer">
     {{ include('_footer.html.twig') }}

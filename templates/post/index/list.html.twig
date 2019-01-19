@@ -7,7 +7,7 @@
 {% for post in pagination %}
 <div class="blog-post">
     <a class="h2 blog-post-title" href="{{ url('post_show', {'slug': post.slug}) }}">{{ post.title }}</a>
-    <p class="blog-post-meta">{{ post.createdAt | date('F d, Y') }} by <a href="#">Mark</a></p>
+    {{ include('post/_meta.html.twig') }}
     {{ post.description | raw }}
 </div>
 {% endfor %}

@@ -2,11 +2,13 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Category;
 use App\Entity\Post;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class PostFixtures extends Fixture
+class PostFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
@@ -20,14 +22,25 @@ class PostFixtures extends Fixture
 
         $count = 40;
 
+        /** @var Category $category */
+        $category = $this->getReference(CategoryFixtures::CATEGORY_REFERENCE);
+
         for ($i = 0; $i < $count; ++$i) {
             $post = new Post();
             $manager->persist($post);
             $post->setTitle(sprintf($title, $i));
             $post->setDescription(sprintf($description, $i));
             $post->setContent(sprintf($content, $i));
+            $post->setCategory($category);
         }
 
         $manager->flush();
+    }
+
+    public function getDependencies(): array
+    {
+        return [
+            CategoryFixtures::class,
+        ];
     }
 }

@@ -8,10 +8,12 @@
 
 namespace App\Controller;
 
+use App\Entity\FilterPost;
 use App\Entity\Post;
+use App\Form\FilterPostType;
 use App\Form\PostType;
 use App\Repository\PostRepository;
-use Knp\Component\Pager\Pagination\PaginationInterface;
+use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,12 +27,13 @@ class PostController extends AbstractController
 {
     /**
      * @param Request $request
+     * @param PostRepository $repository
      * @param PaginatorInterface $paginator
      * @return Response
      *
-     * @Route("/", name="post_index")
+     * @Route("/", name="post_index", methods={"GET"})
      */
-    public function index(Request $request, PaginatorInterface $paginator): Response
+    public function index(Request $request, PostRepository $repository, PaginatorInterface $paginator): Response
     {
         switch ($request->query->get('view')) {
             case 'table':
@@ -46,12 +49,17 @@ class PostController extends AbstractController
                 $count = Post::QUANTITY_PER_PAGE['list'];
         }
 
-        /** @var PostRepository $postRepository */
-        $postRepository = $this->getDoctrine()->getRepository(Post::class);
+        $filter = new FilterPost();
+        $form = $this->createForm(FilterPostType::class, $filter);
+        $form->handleRequest($request);
 
-        $queryBuilder = $postRepository->findAllQueryBuilder();
+        $queryBuilder = $repository->findAllQueryBuilder();
 
-        /** @var PaginationInterface $pagination */
+        if (!$form->isEmpty()) {
+            $queryBuilder = $repository->filterQueryBuilder($filter, $queryBuilder);
+        }
+
+        /** @var SlidingPagination $pagination */
         $pagination = $paginator->paginate(
             $queryBuilder->getQuery(),
             $request->query->getInt('page', 1),
@@ -60,6 +68,7 @@ class PostController extends AbstractController
 
         return $this->render($template, [
             'pagination' => $pagination,
+            'filter' => $filter,
         ]);
     }
 
@@ -67,7 +76,7 @@ class PostController extends AbstractController
      * @param Request $request
      * @return Response
      *
-     * @Route("/new", name="post_new")
+     * @Route("/new", name="post_new", methods={"GET", "POST"})
      */
     public function new(Request $request): Response
     {
@@ -86,6 +95,7 @@ class PostController extends AbstractController
         }
 
         return $this->render('post/new.html.twig', [
+            'post' => $post,
             'form' => $form->createView(),
         ]);
     }
@@ -95,7 +105,7 @@ class PostController extends AbstractController
      * @param Post $post
      * @return Response
      *
-     * @Route("/edit/{slug}", name="post_edit")
+     * @Route("/{slug}/edit", name="post_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Post $post): Response
     {
@@ -111,6 +121,7 @@ class PostController extends AbstractController
         }
 
         return $this->render('post/edit.html.twig', [
+            'post' => $post,
             'form' => $form->createView(),
         ]);
     }
@@ -119,7 +130,7 @@ class PostController extends AbstractController
      * @param Post $post
      * @return Response
      *
-     * @Route("/show/{slug}", name="post_show")
+     * @Route("/{slug}", name="post_show", methods={"GET"})
      */
     public function show(Post $post): Response
     {
@@ -129,18 +140,21 @@ class PostController extends AbstractController
     }
 
     /**
+     * @param Request $request
      * @param Post $post
      * @return Response
      *
-     * @Route("/delete/{slug}", name="post_delete")
+     * @Route("/{slug}", name="post_delete", methods={"DELETE"})
      */
-    public function delete(Post $post): Response
+    public function delete(Request $request, Post $post): Response
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($post);
-        $em->flush();
+        if ($this->isCsrfTokenValid('delete' . $post->getId(), $request->request->get('_token'))) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($post);
+            $em->flush();
 
-        $this->addFlash('success', 'Post deleted');
+            $this->addFlash('success', 'Post deleted');
+        }
 
         return $this->redirectToRoute('post_index');
     }

@@ -38,3 +38,9 @@ services:
         tags:
             - { name: knp_menu.menu, alias: main } # The alias is what is used to retrieve the menu
 
+    app.category_menu:
+        class: Knp\Menu\MenuItem
+        factory: ["@app.menu_builder", createCategoryMenu]
+        arguments: ["@request_stack"]
+        tags:
+            - {name: knp_menu.menu, alias: categories}

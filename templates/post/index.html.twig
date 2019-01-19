@@ -1,10 +1,23 @@
 {% extends 'page.html.twig' %}
 
+{# @var app \Symfony\Bridge\Twig\AppVariable#}
 {# @var pagination \Knp\Component\Pager\Pagination\AbstractPagination #}
 
+{% block title %}{{ 'Posts' | trans }} - {{ parent() }}{% endblock %}
+
 {% block content %}
-    {% block posts %}{% endblock %}
-    <div class="blog-pagination">
+    {% if pagination is not empty %}
+        <div class="blog-post-panel">
+            <a href="{{ url('post_index', app.request.query.all|merge({'view': 'list'})) }}"{% if app.request.get('view') is same as('list') or app.request.get('view') is empty %} class="active" {% endif %}><i class="fas fa-th-list"></i></a>
+            <a href="{{ url('post_index', app.request.query.all|merge({'view': 'table'})) }}"{% if app.request.get('view') is same as('table') %} class="active" {% endif %}><i class="fas fa-table"></i></a>
+        </div>
+        {% block posts %}{% endblock %}
+    {% else %}
+        <div class="blog-post">
+            <h2>{{ 'No posts found' | trans }}</h2>
+        </div>
+    {% endif %}
+    <div class="blog-pagination mb-5">
         {{ knp_pagination_render(pagination) }}
     </div>
 {% endblock %}

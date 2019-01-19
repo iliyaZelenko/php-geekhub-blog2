@@ -1,25 +1,58 @@
+# Entity values
+Id: Id
 Title: Title
 Content: Content
 Created: Created
 Updated: Updated
+Description: Description
+Category: Category
+Categories: Categories
+Order: Order
+CreatedAt: Created
+UpdatedAt: Updated
+Operations: Operations
+Posts: Posts
+Filter: Filter
+From: From
+To: To
+Post view: View
+table: Table
+list: List
 
-Most Recent: Most Recent
-
+# Action
 New Post: New Post
 Edit Post: Edit Post
+Create category: Create new category
+Edit Category: Edit Category
 
-Label.Publish: Publish
+# Сonfirm
+Publish: Publish
+Update: Update
+Save: Save
 
-Back to top: Back to top
-
+# Template
 Html.Title: Welcome!
-
 Template.Title: The Blog
 Template.Description: An example blog built with Symfony.
 Template.Footer: Blog template built for <a href="https://getbootstrap.com">Bootstrap</a> by <a href="https://twitter.com/mdo">@mdo</a>.
+About.Description: Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.
+Post.Meta: "%date% in %category% category"
 
-Link.Home: Home
+# Go to (links)
+Home: Home
+About: About
+Most Recent: Most Recent
+Back to top: Back to top
+Elsewhere: Elsewhere
+Back to list: Back to list
 
+# Messages
 Post created: Post created successfuly!
 Post updated: Post updated successfuly!
 Post deleted: Post deleted successfuly!
+No posts found: Sorry! There is no posts!
+No categories found: Sorry! There is no categories!
+Confirm delete: Are you sure you want to delete this item?
+Category created: Category created successfuly!
+Category updated: Category updated successfuly!
+Category deleted: Category deleted successfuly!

@@ -32,6 +32,7 @@ a:hover {
   color: lightseagreen;
 }
 
+
 /*
  * Override Bootstrap's default container.
  */
@@ -48,27 +49,33 @@ a:hover {
 .blog-masthead {
   margin-bottom: 3rem;
   background-color: #2f2f2f;
-  -webkit-box-shadow: inset 0 -.1rem .25rem rgba(0,0,0,.1);
-          box-shadow: inset 0 -.1rem .25rem rgba(0,0,0,.1);
+  -webkit-box-shadow: inset 0 -.1rem .25rem rgba(0, 0, 0, .1);
+          box-shadow: inset 0 -.1rem .25rem rgba(0, 0, 0, .1);
 }
 
+
 /* Nav links */
+
 .nav-link {
   position: relative;
   padding: 1rem;
   font-weight: 500;
   color: #fff;
 }
+
 .nav-link:hover,
 .nav-link:focus {
   color: #fff;
   background-color: transparent;
 }
 
+
 /* Active state gets a caret at the bottom */
+
 .current .nav-link {
   color: #fff;
 }
+
 .current .nav-link:after {
   position: absolute;
   bottom: 0;
@@ -94,11 +101,13 @@ a:hover {
   margin-bottom: 2rem;
   border-bottom: .05rem solid #eee;
 }
+
 .blog-title {
   margin-bottom: 0;
   font-size: 2rem;
   font-weight: normal;
 }
+
 .blog-description {
   font-size: 1.1rem;
   color: #999;
@@ -115,29 +124,57 @@ a:hover {
  * Main column and sidebar layout
  */
 
+
 /* Sidebar modules for boxing content */
+
 .sidebar-module {
   padding: 1rem;
   /*margin: 0 -1rem 1rem;*/
 }
+
 .sidebar-module-inset {
   padding: 1rem;
   background-color: #f5f5f5;
   border-radius: .25rem;
 }
+
 .sidebar-module-inset p:last-child,
 .sidebar-module-inset ul:last-child,
 .sidebar-module-inset ol:last-child {
   margin-bottom: 0;
 }
 
+.settings a {
+  color: #333;
+}
+
+.settings a:hover {
+  color: lightseagreen;
+}
 
 /* Pagination */
-.blog-pagination {
-  margin-bottom: 4rem;
+
+.blog-post-panel {
+  position: absolute;
+  margin-left: -113px;
+  margin-top: 2px;
 }
-.blog-pagination > .btn {
-  border-radius: 2rem;
+
+.blog-post-panel a {
+  display: inline-block;
+  text-align: center;
+  width: 30px;
+  font-size: 30px;
+  color: #333;
+  margin-left: .5rem;
+}
+
+.blog-post-panel a:hover {
+  color: lightseagreen;
+}
+
+.blog-post-panel a.active {
+  color: lightseagreen;
 }
 
 
@@ -148,24 +185,55 @@ a:hover {
 .blog-post {
   margin-bottom: 4rem;
 }
+
 .blog-post-panel {
   float: right;
 }
+
 .blog-post-panel a {
-  font-size: 30px;
+  font-size: 25px;
   color: #333;
   margin-left: .5rem;
 }
+
 .blog-post-panel a:hover {
   color: lightseagreen;
 }
-.blog-post-title {
-  margin-bottom: .25rem;
-  font-size: 2.5rem;
+
+.form-button-link {
+  background: none!important;
+  border: none;
+  padding: 0!important;
+  cursor: pointer;
 }
+
+.form-button-link:hover {
+  color: lightseagreen;
+}
+
+.blog-post-panel .form-button-link:hover {
+  color: lightseagreen;
+}
+
+.blog-post-panel .form-button-link {
+  color: #333;
+  font-size: 25px;
+  margin-left: .5rem;
+}
+
+.custom-table .form-button-link {
+  color: #007bff;
+}
+
+.blog-post-title {
+  display: block;
+  margin-bottom: .25rem;
+}
+
 .blog-post-title:hover {
   text-decoration: none;
 }
+
 .blog-post-meta {
   margin-bottom: 1.25rem;
   color: #999;
@@ -183,6 +251,7 @@ a:hover {
   background-color: #f9f9f9;
   border-top: .05rem solid #e5e5e5;
 }
+
 .blog-footer p:last-child {
   margin-bottom: 0;
 }
@@ -192,7 +261,8 @@ a:hover {
  * Knp Pagination
  */
 
-.active, .active a {
+.active,
+.active a {
   color: tomato;
 }
 

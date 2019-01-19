@@ -32,7 +32,7 @@ class Post
      * @var string
      *
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Title is empty")
      */
     private $title;
 
@@ -40,7 +40,7 @@ class Post
      * @var string
      *
      * @ORM\Column(type="text")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Description is empty")
      */
     private $description;
 
@@ -48,9 +48,17 @@ class Post
      * @var string
      *
      * @ORM\Column(type="text")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Content is empty")
      */
     private $content;
+
+    /**
+     * @var Category
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="posts")
+     * @Assert\NotNull(message="Category is null")
+     */
+    private $category;
 
     /**
      * @var string
@@ -138,6 +146,23 @@ class Post
     public function setContent(string $content): void
     {
         $this->content = $content;
+    }
+
+    /**
+     * @return Category|null
+     */
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(Category $category): void
+    {
+        $this->category = $category;
+
+        if (!$category->existsPost($this)) {
+            $category->addPost($this);
+        }
     }
 
     /**

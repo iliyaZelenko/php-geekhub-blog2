@@ -1,6 +1,16 @@
 {% extends 'page.html.twig' %}
 
+{# @var post \App\Entity\Post #}
+
+{% block title %}{{ 'Edit Post' | trans }} - {{ parent() }}{% endblock %}
+
 {% block content %}
-    <h1>{{ 'Edit Post' | trans }}</h1>
-    {{ include('post/_form.html.twig') }}
+    <div class="blog-post-panel">
+        <a href="{{ url('post_show', {'slug': post.slug}) }}"><i class="fas fa-file-invoice"></i></a>
+        <div class="d-inline-block">{{ include('post/_delete_form.html.twig') }}</div>
+    </div>
+    <div class="blog-post">
+        <h2>{{ 'Edit Post' | trans }}</h2>
+        {{ include('post/_form.html.twig') }}
+    </div>
 {% endblock %}

@@ -4,24 +4,53 @@
 {# @var post  \App\Entity\Post #}
 
 {% block posts %}
-<table class="table table-striped post-table mb-4">
+<table class="table table-striped custom-table mb-4">
+    <thead>
     <tr>
-        <th{% if pagination.isSorted('p.id') %} class="active" {% endif %}>
-            {{ knp_pagination_sortable(pagination, 'Id', 'p.id') }}
+        <th{% if pagination.isSorted('post.id') %} class="active" {% endif %}>
+            {{ knp_pagination_sortable(pagination, 'Id', 'post.id') }}
         </th>
-        <th{% if pagination.isSorted('p.title') %} class="active" {% endif %}>
-            {{ knp_pagination_sortable(pagination, 'Title', 'p.title') }}
+        <th{% if pagination.isSorted('post.title') %} class="active" {% endif %}>
+            {{ knp_pagination_sortable(pagination, 'Title', 'post.title') }}
         </th>
-        <th{% if pagination.isSorted('p.createdAt') %} class="active" {% endif %}>
-            {{ knp_pagination_sortable(pagination, 'Created', 'p.createdAt') }}
+        <th{% if pagination.isSorted('category.title') %} class="active" {% endif %}>
+            {{ knp_pagination_sortable(pagination, 'Category', 'category.title') }}
+        </th>
+        <th{% if pagination.isSorted('post.createdAt') %} class="active" {% endif %}>
+            {{ knp_pagination_sortable(pagination, 'Created', 'post.createdAt') }}
+        </th>
+        <th>
+            {{ 'Operations' | trans }}
         </th>
     </tr>
+    </thead>
+    <tbody>
     {% for post in pagination %}
     <tr{% if loop.index is odd%} class="post-table-odd" {% endif %}>
         <td>{{ post.id }}</td>
         <td>{{ post.title }}</td>
-        <td>{{ post.createdAt | date('F d, Y') }}</td>
+        <td><a href="{{
+            url('post_index', app.request.query.all|merge({
+                'filter_post[category]': post.category.id
+            }))
+        }}">{{ post.category.title }}</a></td>
+        <td><a href="{{
+            url('post_index', app.request.query.all|merge({
+                'filter_post[from]': post.createdAt | date('Y-m-d'),
+                'filter_post[to]'  : post.createdAt | date('Y-m-d')
+            }))
+        }}">{{ post.createdAt | date('d/m/Y') }}</a></td>
+        <td>
+            <a href="{{ url('post_show', {'slug': post.slug}) }}" class="mr-1">
+                <i class="fas fa-file-invoice"></i>
+            </a>
+            <a href="{{ url('post_edit', {'slug': post.slug}) }}" class="mr-1">
+                <i class="fas fa-pencil-alt"></i>
+            </a>
+            <div class="d-inline-block">{{ include('post/_delete_form.html.twig') }}</div>
+        </td>
     </tr>
     {% endfor %}
+    </tbody>
 </table>
 {% endblock %}
