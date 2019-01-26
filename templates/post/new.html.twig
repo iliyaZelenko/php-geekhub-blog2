@@ -3,6 +3,6 @@
 {% block title %}{{ 'New Post' | trans }} - {{ parent() }}{% endblock %}
 
 {% block content %}
-    <h2>{{ 'New Post' | trans }}</h2>
+    <h1 class="h3">{{ 'New Post' | trans }}</h1>
     {{ include('post/_form.html.twig') }}
 {% endblock %}

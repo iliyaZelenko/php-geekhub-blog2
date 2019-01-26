@@ -3,7 +3,7 @@
 {% block title %}{{ 'Edit Category' | trans }} - {{ parent() }}{% endblock %}
 
 {% block content %}
-    <h2>{{ 'Edit Category' | trans }}</h2>
+    <h1 class="h3">{{ 'Edit Category' | trans }}</h1>
 
     {{ include('category/_form.html.twig', {'button_label': 'Update' | trans}) }}
 

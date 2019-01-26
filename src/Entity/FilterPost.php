@@ -96,6 +96,9 @@ class FilterPost
         return $this->category;
     }
 
+    /**
+     * @param Category|null $category
+     */
     public function setCategory(?Category $category): void
     {
         $this->category = $category;

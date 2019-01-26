@@ -15,6 +15,7 @@ use App\Form\PostType;
 use App\Repository\PostRepository;
 use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -77,6 +78,7 @@ class PostController extends AbstractController
      * @return Response
      *
      * @Route("/new", name="post_new", methods={"GET", "POST"})
+     * @IsGranted("ROLE_USER")
      */
     public function new(Request $request): Response
     {
@@ -106,6 +108,7 @@ class PostController extends AbstractController
      * @return Response
      *
      * @Route("/{slug}/edit", name="post_edit", methods={"GET", "POST"})
+     * @IsGranted("POST_EDIT", subject="post")
      */
     public function edit(Request $request, Post $post): Response
     {
@@ -145,6 +148,7 @@ class PostController extends AbstractController
      * @return Response
      *
      * @Route("/{slug}", name="post_delete", methods={"DELETE"})
+     * @IsGranted("POST_EDIT", subject="post")
      */
     public function delete(Request $request, Post $post): Response
     {

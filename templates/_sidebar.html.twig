@@ -1,7 +1,7 @@
 {{ include('_settings.html.twig') }}
 <div class="sidebar-module">
     <h4>{{ 'Category' | trans }}</h4>
-    {{ knp_menu_render('categories') }}
+    {{ knp_menu_render(knp_menu_get('categories', [], {'root_class': 'list-unstyled', 'link_class': ''})) }}
 </div>
 <div class="sidebar-module sidebar-module-inset">
     <h4>{{ 'About' | trans }}</h4>

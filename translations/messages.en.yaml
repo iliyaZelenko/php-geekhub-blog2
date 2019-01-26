@@ -15,6 +15,9 @@ Posts: Posts
 Filter: Filter
 From: From
 To: To
+Email: Email
+Password: Password
+Plain password: Password
 Post view: View
 table: Table
 list: List
@@ -29,6 +32,7 @@ Edit Category: Edit Category
 Publish: Publish
 Update: Update
 Save: Save
+Sign in: Sign in
 
 # Template
 Html.Title: Welcome!
@@ -45,6 +49,9 @@ Most Recent: Most Recent
 Back to top: Back to top
 Elsewhere: Elsewhere
 Back to list: Back to list
+Log in: Log in
+Log out: Log out
+Register: Register
 
 # Messages
 Post created: Post created successfuly!

@@ -17,6 +17,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Post
 {
+    /**
+     *
+     */
     public const QUANTITY_PER_PAGE = ['table' => 10, 'list' => 4];
 
     /**
@@ -85,6 +88,12 @@ class Post
     private $updatedAt;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="posts")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
+    /**
      * @return int
      */
     public function getId(): int
@@ -94,10 +103,13 @@ class Post
 
     /**
      * @param int $id
+     * @return Post
      */
-    public function setId(int $id): void
+    public function setId(int $id): self
     {
         $this->id = $id;
+
+        return $this;
     }
 
     /**
@@ -110,10 +122,13 @@ class Post
 
     /**
      * @param string $title
+     * @return Post
      */
-    public function setTitle(string $title): void
+    public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
     }
 
     /**
@@ -126,10 +141,13 @@ class Post
 
     /**
      * @param string $description
+     * @return Post
      */
-    public function setDescription(string $description): void
+    public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
     }
 
     /**
@@ -142,10 +160,13 @@ class Post
 
     /**
      * @param string $content
+     * @return Post
      */
-    public function setContent(string $content): void
+    public function setContent(string $content): self
     {
         $this->content = $content;
+
+        return $this;
     }
 
     /**
@@ -156,13 +177,19 @@ class Post
         return $this->category;
     }
 
-    public function setCategory(Category $category): void
+    /**
+     * @param Category|null $category
+     * @return Post
+     */
+    public function setCategory(?Category $category): self
     {
         $this->category = $category;
 
-        if (!$category->existsPost($this)) {
+        if ($category instanceof Category && !$category->getPosts()->contains($this)) {
             $category->addPost($this);
         }
+
+        return $this;
     }
 
     /**
@@ -187,5 +214,28 @@ class Post
     public function getUpdatedAt(): ?\DateTime
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * @return User|null
+     */
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User|null $user
+     * @return Post
+     */
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        if ($user instanceof User && !$user->getPosts()->contains($this)) {
+            $user->addPost($this);
+        }
+
+        return $this;
     }
 }

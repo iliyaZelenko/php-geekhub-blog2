@@ -10,34 +10,42 @@ namespace App\Menu;
 
 use App\Entity\Category;
 use App\Entity\Post;
+use App\Entity\User;
+use App\Repository\CategoryRepository;
 use App\Repository\PostRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Security;
 
 class MenuBuilder
 {
     private $factory;
     private $em;
     private $requestStack;
+    private $token;
+    private $security;
 
-    public function __construct(FactoryInterface $factory, EntityManagerInterface $em, RequestStack $requestStack)
+    public function __construct(FactoryInterface $factory, EntityManagerInterface $em, RequestStack $requestStack, TokenStorageInterface $tokenStorage, Security $security)
     {
         $this->factory = $factory;
         $this->em = $em;
         $this->requestStack = $requestStack;
+        $this->token = $tokenStorage->getToken();
+        $this->security = $security;
     }
 
-    public function createMainMenu(): ItemInterface
+    public function createMainMenu(array $options): ItemInterface
     {
         $menu = $this->factory->createItem('root');
-        $menu->setChildrenAttribute('class', 'nav');
+        $menu->setChildrenAttribute('class', $options['root_class']);
 
         // add 'Home' link
         $menu
             ->addChild('Home', ['route' => 'post_index'])
-            ->setLinkAttribute('class', 'nav-link')
+            ->setLinkAttribute('class', $options['link_class'])
         ;
 
         // add 'Last post' link
@@ -51,32 +59,79 @@ class MenuBuilder
                     'route' => 'post_show',
                     'routeParameters' => ['slug' => $recentPost->getSlug()],
                 ])
-                ->setLinkAttribute('class', 'nav-link')
+                ->setLinkAttribute('class', $options['link_class'])
             ;
         }
 
-        // add 'Create post' link
+        if ($this->security->isGranted('ROLE_USER')) {
+            // add 'Categories' link
+            $menu
+                ->addChild('Categories', ['route' => 'category_index'])
+                ->setLinkAttribute('class', $options['link_class'])
+            ;
+        }
+
+        return $menu;
+    }
+
+    public function createAuthMenu(array $options): ItemInterface
+    {
+        $menu = $this->factory->createItem('root');
+        $menu->setChildrenAttribute('class', $options['root_class']);
+
+        // add 'Login' link
         $menu
-            ->addChild('New Post', ['route' => 'post_new'])
-            ->setLinkAttribute('class', 'nav-link')
+            ->addChild('Log in', ['route' => 'app_login'])
+            ->setLinkAttribute('class', $options['link_class'])
         ;
 
-        // add 'Categories' link
+        // add 'Register' link
         $menu
-            ->addChild('Categories', ['route' => 'category_index'])
-            ->setLinkAttribute('class', 'nav-link')
+            ->addChild('Register', ['route' => 'app_register'])
+            ->setLinkAttribute('class', $options['link_class'])
         ;
 
         return $menu;
     }
 
-    public function createCategoryMenu(): ItemInterface
+    public function createUserMenu(array $options): ItemInterface
     {
         $menu = $this->factory->createItem('root');
-        $menu->setChildrenAttribute('class', 'list-unstyled');
+        $menu->setChildrenAttribute('class', $options['root_class']);
 
+        // add 'Create post' link
+        $menu
+            ->addChild('New Post', ['route' => 'post_new'])
+            ->setLinkAttribute('class', $options['link_class'])
+        ;
+
+        /** @var User $user */
+        $user = $this->token->getUser();
+
+        $menu
+            ->addChild($user->getUsername(), ['route' => 'home'])
+            ->setLinkAttribute('class', $options['link_class'])
+            ->setExtra('translation_domain', false)
+        ;
+
+        // add 'Logout' link
+        $menu
+            ->addChild('Log out', ['route' => 'app_logout'])
+            ->setLinkAttribute('class', $options['link_class'])
+        ;
+
+        return $menu;
+    }
+
+    public function createCategoryMenu(array $options): ItemInterface
+    {
+        $menu = $this->factory->createItem('root');
+        $menu->setChildrenAttribute('class', $options['root_class']);
+
+        /** @var CategoryRepository $repository */
         $repository = $this->em->getRepository(Category::class);
 
+        /** @var Category[] $categories */
         $categories = $repository->findAll();
 
         $query = $this->requestStack->getCurrentRequest()->query->all();
@@ -85,7 +140,10 @@ class MenuBuilder
             $menu->addChild($category->getTitle(), [
                 'route' => 'post_index',
                 'routeParameters' => array_merge($query, ['filter_post[category]' => $category->getId()]),
-            ]);
+            ])
+                ->setLinkAttribute('class', $options['link_class'])
+                ->setExtra('translation_domain', false)
+            ;
         }
 
         return $menu;

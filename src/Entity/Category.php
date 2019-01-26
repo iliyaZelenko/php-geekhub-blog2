@@ -122,10 +122,11 @@ class Category
 
     /**
      * @param Post $post
+     * @return Category
      */
-    public function addPost(Post $post): void
+    public function addPost(Post $post): self
     {
-        if ($this->existsPost($post)) {
+        if ($this->posts->contains($post)) {
             throw new \LogicException('Add post that already exists in array!');
         }
 
@@ -136,27 +137,26 @@ class Category
         } elseif ($post->getCategory() !== $this) {
             throw new \LogicException('Add post that already has another category!');
         }
+
+        return $this;
     }
 
     /**
      * @param Post $post
+     * @return Category
      */
-    public function removePost(Post $post): void
+    public function removePost(Post $post): self
     {
-        if (!$this->existsPost($post)) {
+        if (!$this->posts->contains($post)) {
             throw new \LogicException('Remove post that already removed from array!');
         }
 
         $this->posts->removeElement($post);
-    }
+        if ($post->getCategory() === $this) {
+            $post->setCategory(null);
+        }
 
-    /**
-     * @param Post $post
-     * @return bool
-     */
-    public function existsPost(Post $post): bool
-    {
-        return $this->posts->exists(function ($element) use ($post) { return $element === $post; });
+        return $this;
     }
 
     /**
