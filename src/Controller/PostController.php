@@ -8,8 +8,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\FilterPost;
 use App\Entity\Post;
+use App\Form\CommentType;
 use App\Form\FilterPostType;
 use App\Form\PostType;
 use App\Repository\PostRepository;
@@ -137,8 +139,14 @@ class PostController extends AbstractController
      */
     public function show(Post $post): Response
     {
+        $comment = new Comment();
+        $comment->setPost($post);
+        $commentForm = $this->createForm(CommentType::class, $comment);
+        $comment->setPost(null);
+
         return $this->render('post/show.html.twig', [
             'post' => $post,
+            'comment_form' => $commentForm->createView(),
         ]);
     }
 

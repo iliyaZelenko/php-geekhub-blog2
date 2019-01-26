@@ -1,3 +1,5 @@
+{% set current_path = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params'))  %}
+
 {% extends 'page.html.twig' %}
 
 {# @var post \App\Entity\Post#}
@@ -16,5 +18,8 @@
         {{ include('post/_meta.html.twig') }}
         {{ post.description | raw }}
         {{ post.content | raw }}
+    </div>
+    <div class="blog-post-comments">
+        {{ include('post/_comments.html.twig') }}
     </div>
 {% endblock %}

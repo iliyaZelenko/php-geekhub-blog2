@@ -7,3 +7,4 @@ Email is not unique: There is already an account with this email!
 Password is empty:  Please enter a password!
 Password min length:  Your password should be at least {{ limit }} characters
 Email is not valid: Email is not valid!
+Content of comment is empty: Content of comment must not be blank!

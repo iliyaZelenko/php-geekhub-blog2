@@ -2,14 +2,14 @@
 
 namespace App\Security\Voter;
 
-use App\Entity\Post;
+use App\Entity\Comment;
 use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class PostVoter extends Voter
+class CommentVoter extends Voter
 {
     private $security;
 
@@ -20,11 +20,11 @@ class PostVoter extends Voter
 
     protected function supports($attribute, $subject): bool
     {
-        return \in_array($attribute, ['POST_EDIT'], true)
-            && $subject instanceof Post;
+        return \in_array($attribute, ['COMMENT_EDIT'], true)
+            && $subject instanceof Comment;
     }
 
-    protected function voteOnAttribute($attribute, $post, TokenInterface $token): bool
+    protected function voteOnAttribute($attribute, $comment, TokenInterface $token): bool
     {
         /** @var User $user */
         $user = $token->getUser();
@@ -39,8 +39,8 @@ class PostVoter extends Voter
 
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
-            case 'POST_EDIT':
-                return $user->getPosts()->contains($post);
+            case 'COMMENT_EDIT':
+                return $user->getComments()->contains($comment);
         }
 
         return false;
