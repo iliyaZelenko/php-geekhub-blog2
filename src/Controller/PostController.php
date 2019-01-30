@@ -56,7 +56,11 @@ class PostController extends AbstractController
         $form = $this->createForm(FilterPostType::class, $filter);
         $form->handleRequest($request);
 
-        $queryBuilder = $repository->findAllQueryBuilder();
+        if ($request->get('search') !== null) {
+            $queryBuilder = $repository->findByTitleQueryBuilder($request->get('search'));
+        } else {
+            $queryBuilder = $repository->findAllQueryBuilder();
+        }
 
         if (!$form->isEmpty()) {
             $queryBuilder = $repository->filterQueryBuilder($filter, $queryBuilder);

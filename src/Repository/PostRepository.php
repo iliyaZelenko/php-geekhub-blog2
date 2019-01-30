@@ -59,6 +59,10 @@ class PostRepository extends ServiceEntityRepository
         return $queryBuilder;
     }
 
+    /**
+     * @return Post|null
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function findMostRecent(): ?Post
     {
         return $this
@@ -66,6 +70,15 @@ class PostRepository extends ServiceEntityRepository
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()
+        ;
+    }
+
+    public function findByTitleQueryBuilder($title)
+    {
+        return $this
+            ->findAllQueryBuilder()
+            ->where('post.title LIKE :title')
+            ->setParameter('title', '%'.$title.'%')
         ;
     }
 }
