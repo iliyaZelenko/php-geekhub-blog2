@@ -10,6 +10,7 @@ namespace App\Twig;
 
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
+use Twig\TwigFunction;
 
 class AppExtension extends AbstractExtension
 {
@@ -17,6 +18,13 @@ class AppExtension extends AbstractExtension
     {
         return [
             new TwigFilter('merge_recursive', [$this, 'mergeRecursive']),
+        ];
+    }
+
+    public function getFunctions()
+    {
+        return [
+            new TwigFunction('generate_all_input_hidden', [$this, 'generateInputHidden']),
         ];
     }
 
@@ -31,5 +39,26 @@ class AppExtension extends AbstractExtension
         }
 
         return $all;
+    }
+
+    public function generateInputHidden(array $all, array $exclude = [])
+    {
+        $html = '';
+        foreach (array_diff_key($all, array_flip($exclude)) as $key => $value) {
+            if (is_array($value)) {
+                $html .= $this->generateInputHidden($this->formatKeysInArray($value, $key.'[%s]'));
+            } else {
+                $html .= '<input type="hidden" name="'.$key.'" value="'.$value.'">';
+            }
+        }
+        return $html;
+    }
+
+    private function formatKeysInArray(array $array, $format) {
+        $result = [];
+        foreach ($array as $key => $value) {
+            $result[sprintf($format, $key)] = $value;
+        }
+        return $result;
     }
 }

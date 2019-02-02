@@ -21,3 +21,15 @@
         {{ knp_pagination_render(pagination) }}
     </div>
 {% endblock %}
+
+{% block sidebar %}
+    {{ parent() }}
+    <div class="sidebar-module">
+        <h4>{{ 'Set count of shown posts' | trans }}</h4>
+        <form method="get" action="">
+            {{ generate_all_input_hidden(app.request.query.all(), ['post-count']) | raw }}
+            <input type="number" class="form-control mb-2" name="post-count" value="{{ app.request.get('post-count') }}">
+            <button class="btn btn-primary">{{ 'Set' | trans }}</button>
+        </form>
+    </div>
+{% endblock %}

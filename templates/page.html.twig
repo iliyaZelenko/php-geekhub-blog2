@@ -35,7 +35,9 @@
             {% block content %}{% endblock %}
         </div>
         <div class="col-sm-3 offset-sm-1 blog-sidebar">
-            {{ include('_sidebar.html.twig') }}
+            {% block sidebar %}
+                {{ include('_sidebar.html.twig') }}
+            {% endblock %}
         </div>
     </div>
 </div>

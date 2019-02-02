@@ -70,7 +70,7 @@ class PostController extends AbstractController
         $pagination = $paginator->paginate(
             $queryBuilder->getQuery(),
             $request->query->getInt('page', 1),
-            $count
+            $request->query->getInt('post-count', $count)
         );
 
         return $this->render($template, [
