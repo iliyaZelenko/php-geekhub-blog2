@@ -99,6 +99,14 @@ class MenuBuilder
         $menu = $this->factory->createItem('root');
         $menu->setChildrenAttribute('class', $options['root_class']);
 
+        // add 'Admin panel' link
+        if ($this->security->isGranted('ROLE_ADMIN')) {
+            $menu
+                ->addChild('Admin Panel', ['route' => 'sonata_admin_dashboard'])
+                ->setLinkAttribute('class', $options['link_class'])
+            ;
+        }
+
         // add 'Create post' link
         $menu
             ->addChild('New Post', ['route' => 'post_new'])
