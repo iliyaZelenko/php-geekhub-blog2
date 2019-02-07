@@ -15,19 +15,33 @@ use App\Form\CommentType;
 use App\Form\FilterPostType;
 use App\Form\PostType;
 use App\Repository\PostRepository;
+use FOS\RestBundle\Routing\ClassResourceInterface;
 use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use FOS\RestBundle\Controller\AbstractFOSRestController;
+use FOS\RestBundle\Controller\Annotations as Rest;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @Route("/post")
+ * @Rest\RouteResource("Posts")
  */
-class PostController extends AbstractController
+class PostController extends AbstractFOSRestController implements ClassResourceInterface
 {
+
+    public $repository;
+    public $paginator;
+
+    public function __construct(PostRepository $repository, PaginatorInterface $paginator)
+    {
+        $this->repository = $repository;
+        $this->paginator = $paginator;
+    }
+
     /**
      * @param Request $request
      * @param PostRepository $repository
@@ -174,5 +188,28 @@ class PostController extends AbstractController
         }
 
         return $this->redirectToRoute('post_index');
+    }
+
+    public function getAction(Request $request)
+    {
+        $queryBuilder = $this->repository->findAllQueryBuilder();
+
+        /** @var SlidingPagination $pagination */
+        $pagination = $this->paginator->paginate(
+            $queryBuilder->getQuery(),
+            $request->query->getInt('page', 1),
+            $request->query->getInt('post-count', Post::QUANTITY_PER_PAGE['list'])
+        );
+
+        $data = [
+            'pagination' => $pagination,
+            'items' => $pagination->getItems(),
+        ];
+
+        $view = $this->view($pagination->getItems())
+            ->setTemplate('post/index/list.html.twig')
+            ->setTemplateData($data);
+
+        return $this->handleView($view);
     }
 }

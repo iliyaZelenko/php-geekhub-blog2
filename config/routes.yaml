@@ -5,3 +5,7 @@ home:
         route: post_index
         permanent: true
         keepQueryParams: true
+
+posts:
+    type: rest
+    resource: App\Controller\PostController
